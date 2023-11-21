@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <!-- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Color Picker</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="app">
+        <header>
+          <form id="form">
+            <div class="actionable">
+              <input name="color" type="color" />
+              <select name="option">
+                <option value="monochrome">Monochrome</option>
+                <option value="monochrome-dark">Monochrome-dark</option>
+                <option value="monochrome-light">Monochrome-light</option>
+                <option value="analogic">Analogic</option>
+                <option value="complement">Complement</option>
+                <option value="analogic-complement">Analogic-complement</option>
+                <option value="triad">Triad</option>
+                <option value="quad">Quad</option>
+              </select>
+            </div>
+
+            <button id="getButton" type="submit">Get Color Scheme</button>
+          </form>
+        </header>
+        <div class="color-container">
+          <div id="color1" class="color"></div>
+          <div id="color2" class="color"></div>
+          <div id="color3" class="color"></div>
+          <div id="color4" class="color"></div>
+          <div id="color5" class="color"></div>
+        </div>
+        <div class="color-text">
+          <button class="copy-btn" id="color1-text">
+            #000000 <i class="fa-regular fa-copy" style="color: #000000"></i>
+          </button>
+          <button class="copy-btn" id="color2-text">
+            #000000 <i class="fa-regular fa-copy" style="color: #000000"></i>
+          </button>
+          <button class="copy-btn" id="color3-text">
+            #000000 <i class="fa-regular fa-copy" style="color: #000000"></i>
+          </button>
+          <button class="copy-btn" id="color4-text">
+            #000000 <i class="fa-regular fa-copy" style="color: #000000"></i>
+          </button>
+          <button class="copy-btn" id="color5-text">
+            #000000 <i class="fa-regular fa-copy" style="color: #000000"></i>
+          </button>
+        </div>
+        <div></div>
+      </div>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/ad9f7d65df.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./index.js" type="module"></script>
+  </body>
+</html>
