@@ -1,18 +1,23 @@
+// This code gets your form element from your HTML file and stores it in a variable called form. It also sets the value of the variable lightDark to an empty string.
 const form = document.getElementById("form");
+let lightDark = "";
 
-const color1 = document.getElementById("color1");
-const color2 = document.getElementById("color2");
-const color3 = document.getElementById("color3");
-const color4 = document.getElementById("color4");
-const color5 = document.getElementById("color5");
+// Get the color elements from the DOM.
+const colors = Array.from({ length: 5 }, (_, i) =>
+  document.getElementById(`color${i + 1}`)
+);
 
-const color1Text = document.getElementById("color1-text");
-const color2Text = document.getElementById("color2-text");
-const color3Text = document.getElementById("color3-text");
-const color4Text = document.getElementById("color4-text");
-const color5Text = document.getElementById("color5-text");
+// Get the color text elements from the DOM.
+const colorTexts = Array.from({ length: 5 }, (_, i) =>
+  document.getElementById(`color${i + 1}-text`)
+);
 
 const buttons = document.querySelectorAll(".copy-btn");
+
+
+// This code copies the text content of a button element when the button is clicked
+// It first checks the text content of the button itself, and if it is empty, it copies the text content of its parent element
+// It then writes the text content to the clipboard and alerts the user that the text has been copied
 
 buttons.forEach((button) => {
   button.addEventListener("click", (event) => {
@@ -37,23 +42,68 @@ form.addEventListener("submit", (e) => {
   const option = myFormData.get("option");
   color = color.substring(1, color.length);
 
-  console.log(color);
+  lightDark = lightOrDark(color);
 
   fetch(
     `https://www.thecolorapi.com/scheme?hex=${color}&mode=${option}&count=5`
   )
     .then((res) => res.json())
     .then((data) => {
-      color1.style.backgroundColor = `${data.colors[0].hex.value}`;
-      color2.style.backgroundColor = `${data.colors[1].hex.value}`;
-      color3.style.backgroundColor = `${data.colors[2].hex.value}`;
-      color4.style.backgroundColor = `${data.colors[3].hex.value}`;
-      color5.style.backgroundColor = `${data.colors[4].hex.value}`;
+      data.colors.forEach((colorData, i) => {
+        colors[i].style.backgroundColor = `${colorData.hex.value}`;
+        colors[i].textContent = `${colorData.name.value}`;
+        colorTexts[
+          i
+        ].innerHTML = `${colorData.hex.value}   <i class="fa-regular fa-copy" style="color: #000000;"></i>`;
 
-      color1Text.innerHTML = `${data.colors[0].hex.value}   <i class="fa-regular fa-copy" style="color: #000000;"></i>`;
-      color2Text.innerHTML = `${data.colors[1].hex.value}   <i class="fa-regular fa-copy" style="color: #000000;"></i>`;
-      color3Text.innerHTML = `${data.colors[2].hex.value}   <i class="fa-regular fa-copy" style="color: #000000;"></i>`;
-      color4Text.innerHTML = `${data.colors[3].hex.value}   <i class="fa-regular fa-copy" style="color: #000000;"></i>`;
-      color5Text.innerHTML = `${data.colors[4].hex.value}   <i class="fa-regular fa-copy" style="color: #000000;"></i>`;
+        if (lightDark === "light") {
+          colors[i].style.color = "black";
+        } else {
+          colors[i].style.color = "white";
+        }
+      });
     });
 });
+
+
+
+// This function determines whether a given color is light or dark. It accepts a
+// single parameter color (a string representing a hex color code or an RGB color
+// code) and returns a string ("light" or "dark") indicating whether the
+// specified color is light or dark. See the function lightOrDark for an example
+// of how to use this function.
+
+function lightOrDark(color) {
+  // Variables for red, green, blue values
+  var r, g, b, hsp;
+
+  // Check the format of the color, HEX or RGB?
+  if (color.match(/^rgb/)) {
+    // If RGB --> store the red, green, blue values in separate variables
+    color = color.match(
+      /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/
+    );
+
+    r = color[1];
+    g = color[2];
+    b = color[3];
+  } else {
+    // If hex --> Convert it to RGB: http://gist.github.com/983661
+    color = +("0x" + color.slice(1).replace(color.length < 5 && /./g, "$&$&"));
+
+    r = color >> 16;
+    g = (color >> 8) & 255;
+    b = color & 255;
+  }
+
+  // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+  hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+
+  // Using the HSP value, determine whether the color is light or dark
+  if (hsp > 127.5) {
+    return "light";
+  } else {
+    return "dark";
+  }
+}
+

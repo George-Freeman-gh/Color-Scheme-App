@@ -84,6 +84,11 @@ button {
 .color {
   width: 100%;
   height: 80vh;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
 }
 
 .app {
